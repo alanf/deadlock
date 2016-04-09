@@ -120,7 +120,7 @@ static int32_t testCount = 0;
     [super tearDown];
     testCount += 1;
 
-    if (testCount > 400) {
+    if (testCount > 250) {
         // Yay! We finally get to spin the runloop.
         // Now the queue will drain and deallocs will actually happen...
         // But also notice that the runloop gets slammed with `processPendingChanges` calls.
@@ -1369,6 +1369,8 @@ static int32_t testCount = 0;
 - (void)testExample400 {
     self.account.name = @"foo";
 }
+
+/*
 - (void)testExample401 {
     self.account.name = @"foo";
 }
@@ -4970,7 +4972,7 @@ static int32_t testCount = 0;
 - (void)testExample1600 {
     self.account.name = @"foo";
 }
-/*
+
 - (void)testExample1601 {
     self.account.name = @"foo";
 }

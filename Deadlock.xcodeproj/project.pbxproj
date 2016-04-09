@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A050BA261CB98D6C008D699C /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = A0DB36C81CB8B89500417545 /* Account.m */; };
+		A050BA271CB98D7E008D699C /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = A0DB36C81CB8B89500417545 /* Account.m */; };
 		A0DB36A11CB8B29F00417545 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0DB36A01CB8B29F00417545 /* main.m */; };
 		A0DB36A41CB8B29F00417545 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A0DB36A31CB8B29F00417545 /* AppDelegate.m */; };
 		A0DB36A71CB8B29F00417545 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0DB36A61CB8B29F00417545 /* ViewController.m */; };
 		A0DB36AA1CB8B2A000417545 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0DB36A81CB8B29F00417545 /* Main.storyboard */; };
 		A0DB36AD1CB8B2A000417545 /* Deadlock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A0DB36AB1CB8B2A000417545 /* Deadlock.xcdatamodeld */; };
 		A0DB36AF1CB8B2A000417545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0DB36AE1CB8B2A000417545 /* Assets.xcassets */; };
-		A0DB36B21CB8B2A000417545 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0DB36B01CB8B2A000417545 /* LaunchScreen.storyboard */; };
 		A0DB36BD1CB8B2A000417545 /* DeadlockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A0DB36BC1CB8B2A000417545 /* DeadlockTests.m */; };
-		A0DB36C91CB8B89500417545 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = A0DB36C81CB8B89500417545 /* Account.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,7 +199,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0DB36B21CB8B2A000417545 /* LaunchScreen.storyboard in Resources */,
 				A0DB36AF1CB8B2A000417545 /* Assets.xcassets in Resources */,
 				A0DB36AA1CB8B2A000417545 /* Main.storyboard in Resources */,
 			);
@@ -222,7 +221,7 @@
 				A0DB36AD1CB8B2A000417545 /* Deadlock.xcdatamodeld in Sources */,
 				A0DB36A71CB8B29F00417545 /* ViewController.m in Sources */,
 				A0DB36A41CB8B29F00417545 /* AppDelegate.m in Sources */,
-				A0DB36C91CB8B89500417545 /* Account.m in Sources */,
+				A050BA261CB98D6C008D699C /* Account.m in Sources */,
 				A0DB36A11CB8B29F00417545 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -232,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0DB36BD1CB8B2A000417545 /* DeadlockTests.m in Sources */,
+				A050BA271CB98D7E008D699C /* Account.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,7 +301,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -338,7 +338,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -410,6 +410,7 @@
 				A0DB36C31CB8B2A000417545 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A0DB36C41CB8B2A000417545 /* Build configuration list for PBXNativeTarget "DeadlockTests" */ = {
 			isa = XCConfigurationList;
@@ -418,6 +419,7 @@
 				A0DB36C61CB8B2A000417545 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
