@@ -34,11 +34,13 @@
 
 @interface SDManagedObjectContext : NSManagedObjectContext
 
+@property  (atomic) BOOL waitingForSave;
 @end
 
 @implementation SDManagedObjectContext
 
 static NSHashTable *instances = nil;
+id _SQ_saveSemaphore;
 
 - (instancetype)initWithConcurrencyType:(NSManagedObjectContextConcurrencyType)ct
 {
@@ -47,6 +49,7 @@ static NSHashTable *instances = nil;
     }
     
     [instances addObject:self];
+    _SQ_saveSemaphore = [NSObject new];
     return [super initWithConcurrencyType:ct];
 }
 
@@ -65,12 +68,46 @@ static NSHashTable *instances = nil;
     [super processPendingChanges];
 }
 
+
+- (BOOL)save:(NSError **)error;
+{
+    if (self.concurrencyType != NSMainQueueConcurrencyType) {
+        return [super save:error];
+    }
+    if (!self.hasChanges) {
+        *error = nil;
+        return YES;
+    }
+    
+    
+    @synchronized(_SQ_saveSemaphore) {
+        NSLog(@"Starting to save");
+        // TODO: convert to a counter
+        self.waitingForSave = true;
+        
+        BOOL result = [super save:error];
+        
+        // Run the runloop until the work is done.
+        NSDate *currentDate = [NSDate date];
+        NSDate *timeoutDate = [currentDate dateByAddingTimeInterval:.001];
+        do {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:.001]];
+            currentDate = [NSDate date];
+        } while (self.waitingForSave || [currentDate compare:timeoutDate] != NSOrderedDescending);
+        
+        NSLog(@"Done saving");
+        return result;
+    }
+    
+}
+
 - (void)performWithOptions:(unsigned int)arg1 andBlock:(dispatch_block_t)arg2;
 {
      __weak SDManagedObjectContext *weakSelf = self;
     NSLog(@"About to be retained %@", self);
     [super performWithOptions:arg1 andBlock:^{
         arg2();
+        weakSelf.waitingForSave = NO;
         NSLog(@"in callback %@", weakSelf);
     }];
     NSLog(@"My retain count just went up %@", self);
@@ -82,6 +119,7 @@ static NSHashTable *instances = nil;
 @interface DeadlockTests : XCTestCase
 
 @property Account *account;
+@property SDManagedObjectContext *context;
 
 @end
 
@@ -107,6 +145,7 @@ static int32_t testCount = 0;
     context.persistentStoreCoordinator = coordinator;
     context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
     XCTAssertNil(context.undoManager);
+    self.context = context;
     
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:context];
     Account *account = [[Account alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
@@ -119,21 +158,8 @@ static int32_t testCount = 0;
 - (void)tearDown {
     [super tearDown];
     testCount += 1;
-
-    if (testCount > 400) {
-        // Yay! We finally get to spin the runloop.
-        // Now the queue will drain and deallocs will actually happen...
-        // But also notice that the runloop gets slammed with `processPendingChanges` calls.
-        // We depend on `processPendingChanges` calls clearing out, because if they happen on every runloop, it gets costly.
-        // But, at a larger scale, they may not dissipate very quickly.
-        // And I *believe* that the NSRunLoop aborts draining its lower priority queues if it spends too much on other tasks.
-        NSDate *currentDate = [NSDate date];
-        NSDate *timeoutDate = [currentDate dateByAddingTimeInterval:.1];
-        do {
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:MIN(.1, .001)]];
-            currentDate = [NSDate date];
-        } while ([currentDate compare:timeoutDate] != NSOrderedDescending);
-    }
+    
+    self.context = nil;
 }
 
 // Create a number of very similar tests so we can see the accumulation of contexts.
