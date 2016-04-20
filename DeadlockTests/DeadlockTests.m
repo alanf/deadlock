@@ -88,6 +88,7 @@ static NSHashTable *instances = nil;
 @implementation DeadlockTests
 
 static int32_t testCount = 0;
+NSManagedObjectContext *_context;
 
 - (void)setUp {
     [super setUp];
@@ -114,10 +115,14 @@ static int32_t testCount = 0;
     [context save:NULL];
     
     self.account = account;
+    // Otherwise nothing retains context
+    _context = context;
 }
 
 - (void)tearDown {
     [super tearDown];
+    _context = nil;
+    
     testCount += 1;
 
     if (testCount > 250) {
